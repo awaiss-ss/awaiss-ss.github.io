@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>John Watson - Personal Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #111827;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Typing animation */
+    .typing-text {
+      position: relative;
+      display: inline-block;
+    }
+
+    .typing-text::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: #a855f7;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      from, to { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1f2937;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a855f7;
+    }
+
+    /* Particle canvas */
+    #tsparticles {
+      position: fixed !important;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    /* Section transitions */
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Skill bar animation */
+    @keyframes fillBar {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    .skill-bar {
+      width: 0;
+      animation: none;
+    }
+
+    .skill-bar.animate {
+      animation: fillBar 1s ease-out forwards;
+    }
+
+    /* Portfolio hover effects */
+    .portfolio-item {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .portfolio-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(168, 85, 247, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .portfolio-item:hover .portfolio-overlay {
+      opacity: 1;
+    }
+
+    .portfolio-item img {
+      transition: transform 0.5s ease;
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Form focus effects */
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #a855f7;
+      box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+    }
+
+    /* Button hover animation */
+    .btn-hover-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-hover-effect::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn-hover-effect:hover::after {
+      width: 300%;
+      height: 300%;
+    }
+
+    /* Animation classes */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .fade-in-delay-1 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.1s;
+    }
+
+    .fade-in-delay-2 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.2s;
+    }
+
+    .fade-in-delay-3 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.3s;
+    }
+
+    .fade-in-delay-4 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.4s;
+    }
+
+    .fade-in-delay-5 {
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards 0.5s;
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideInLeft 0.5s ease forwards;
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(20px);
+      animation: slideInRight 0.5s ease forwards;
+    }
+
+    .slide-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideInUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInLeft {
+      from { 
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from { 
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInUp {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particles Container -->
+  <div id="tsparticles"></div>
+
+  <div class="container mx-auto px-4 py-8 relative z-10">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-gray-900/80 backdrop-blur-sm z-50 py-4 px-6">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="text-2xl font-bold text-purple-500 fade-in">
+         Rana Awais
+        </div>
+        <ul class="hidden md:flex space-x-6">
+          <li class="fade-in-delay-1">
+            <a href="#home" class="hover:text-purple-500 transition-colors text-purple-500 nav-link">
+              Home
+            </a>
+          </li>
+          <li class="fade-in-delay-2">
+            <a href="#about" class="hover:text-purple-500 transition-colors nav-link">
+              About
+            </a>
+          </li>
+          <li class="fade-in-delay-3">
+            <a href="#resume" class="hover:text-purple-500 transition-colors nav-link">
+              Resume
+            </a>
+          </li>
+          <li class="fade-in-delay-4">
+            <a href="#portfolio" class="hover:text-purple-500 transition-colors nav-link">
+              Portfolio
+            </a>
+          </li>
+          <li class="fade-in-delay-5">
+            <a href="#contact" class="hover:text-purple-500 transition-colors nav-link">
+              Contact
+            </a>
+          </li>
+        </ul>
+        <div class="md:hidden">
+          <button class="text-white" id="mobile-menu-button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-gray-900 z-40 flex items-center justify-center md:hidden" style="display: none;">
+      <div class="text-center">
+        <ul class="space-y-6">
+          <li><a href="#home" class="text-2xl hover:text-purple-500 transition-colors mobile-link">Home</a></li>
+          <li><a href="#about" class="text-2xl hover:text-purple-500 transition-colors mobile-link">About</a></li>
+          <li><a href="#resume" class="text-2xl hover:text-purple-500 transition-colors mobile-link">Resume</a></li>
+          <li><a href="#portfolio" class="text-2xl hover:text-purple-500 transition-colors mobile-link">Portfolio</a></li>
+          <li><a href="#contact" class="text-2xl hover:text-purple-500 transition-colors mobile-link">Contact</a></li>
+        </ul>
+        <button class="mt-8 text-gray-400 hover:text-white" id="close-mobile-menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-16">
+      <div class="text-center">
+        <div class="w-48 h-48 mx-auto mb-6">
+          <img 
+            src="https://media.istockphoto.com/id/910425902/photo/programming-man.jpg?s=612x612&w=0&k=20&c=Yef5_uc4I1jn0VxxBvkrPdDYI4JfzFVRAXOn5HG8m20=" 
+            alt="Profile" 
+            class="rounded-full border-4 border-purple-500 fade-in object-cover w-full h-full"
+          />
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-2 fade-in-delay-2">
+          Rana Awais
+        </h1>
+        <div class="text-xl md:text-2xl text-gray-300 mb-8 fade-in-delay-3">
+          <span class="typing-text">Full Stack Developer</span>
+        </div>
+        <div class="flex justify-center space-x-4 fade-in-delay-4">
+          <a href="#" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-full transition-colors">
+            Download CV
+          </a>
+          <a href="#contact" class="border border-purple-600 text-purple-500 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-full transition-colors">
+            Contact Me
+          </a>
+        </div>
+        <div class="flex justify-center mt-8 space-x-4 fade-in-delay-5">
+          <a href="https://github.com/awaiss-ss" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/muhammad-awais-666a53323?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/awaiss.ss/" class="text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 text-center relative slide-in-up">
+          About Me
+          <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-purple-500 mt-2"></span>
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+          <div class="slide-in-left">
+            <h3 class="text-2xl font-semibold mb-4">Who am I?</h3>
+            <p class="text-gray-300 mb-4">
+              I'm a Full Stack Developer with over 5 years of experience in building web applications. 
+              I specialize in JavaScript, React, Node.js, and modern web technologies.
+            </p>
+            <p class="text-gray-300 mb-4">
+              My passion is creating elegant, efficient, and user-friendly applications that solve real-world problems.
+              I'm constantly learning and adapting to new technologies to stay at the forefront of web development.
+            </p>
+            <div class="grid grid-cols-2 gap-4 mt-6">
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>John Watson</span>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <span>Muhammadawais4th@gmail.com</span>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+92 312-523-6168</span>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Pakistan , Islamabad</span>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                <span>Born: May 14, 1990</span>
+              </div>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-2"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"/><path d="M3 7v10a2 2 0 0 0 2 2h4"/><path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>
+                <span>5+ Years Experience</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="slide-in-right">
+            <h3 class="text-2xl font-semibold mb-4">My Skills</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>JavaScript</span>
+                  <span>95%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-purple-500 h-2 rounded-full skill-bar" style="width: 95%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>React</span>
+                  <span>90%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-purple-500 h-2 rounded-full skill-bar" style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>Node.js</span>
+                  <span>85%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-purple-500 h-2 rounded-full skill-bar" style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>TypeScript</span>
+                  <span>80%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-purple-500 h-2 rounded-full skill-bar" style="width: 80%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>CSS/SCSS</span>
+                  <span>85%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                  <div class="bg-purple-500 h-2 rounded-full skill-bar" style="width: 85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume" class="py-20">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 text-center relative slide-in-up">
+          My Resume
+          <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-purple-500 mt-2"></span>
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+          <div class="slide-in-left">
+            <div class="flex items-center mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-3"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"/><path d="M3 7v10a2 2 0 0 0 2 2h4"/><path d="M7 22v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>
+              <h3 class="text-2xl font-semibold">Experience</h3>
+            </div>
+            
+            <div class="space-y-8">
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2020 - Present</div>
+                  <h4 class="text-xl font-semibold mb-2">Senior Frontend Developer</h4>
+                  <p class="text-gray-400 mb-2">TechCorp Inc.</p>
+                  <p class="text-gray-300">
+                    Led the frontend development team in building modern web applications.
+                    Implemented best practices and improved performance by 40%.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2018 - 2020</div>
+                  <h4 class="text-xl font-semibold mb-2">Full Stack Developer</h4>
+                  <p class="text-gray-400 mb-2">WebSolutions LLC</p>
+                  <p class="text-gray-300">
+                    Developed and maintained multiple client projects using React, Node.js, and MongoDB.
+                    Collaborated with design team to implement responsive UI/UX.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2016 - 2018</div>
+                  <h4 class="text-xl font-semibold mb-2">Junior Web Developer</h4>
+                  <p class="text-gray-400 mb-2">Digital Creations</p>
+                  <p class="text-gray-300">
+                    Built and maintained websites for small businesses.
+                    Gained experience in HTML, CSS, JavaScript, and PHP.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="slide-in-right">
+            <div class="flex items-center mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-3"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+              <h3 class="text-2xl font-semibold">Education</h3>
+            </div>
+            
+            <div class="space-y-8">
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2012 - 2016</div>
+                  <h4 class="text-xl font-semibold mb-2">Bachelor of Science in Computer Science</h4>
+                  <p class="text-gray-400 mb-2">Stanford University</p>
+                  <p class="text-gray-300">
+                    Graduated with honors. Specialized in web technologies and software engineering.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2018</div>
+                  <h4 class="text-xl font-semibold mb-2">Advanced JavaScript Certification</h4>
+                  <p class="text-gray-400 mb-2">Frontend Masters</p>
+                  <p class="text-gray-300">
+                    Completed intensive training in advanced JavaScript concepts, functional programming, and modern frameworks.
+                  </p>
+                </div>
+              </div>
+              
+              <div class="relative pl-8 border-l-2 border-purple-500">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+                <div class="bg-gray-800 p-5 rounded-lg">
+                  <div class="text-sm text-purple-500 mb-1">2019</div>
+                  <h4 class="text-xl font-semibold mb-2">AWS Certified Developer</h4>
+                  <p class="text-gray-400 mb-2">Amazon Web Services</p>
+                  <p class="text-gray-300">
+                    Earned certification in cloud architecture and deployment using AWS services.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12 text-center relative slide-in-up">
+          Contact Me
+          <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-purple-500 mt-2"></span>
+        </h2>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+          <div class="slide-in-left">
+            <h3 class="text-2xl font-semibold mb-6">Get In Touch</h3>
+            <p class="text-gray-300 mb-6">
+              Feel free to contact me for any project or collaboration. I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-3 mt-1"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div>
+                  <h4 class="font-semibold">Location</h4>
+                  <p class="text-gray-400">Pakistan , Islamabad</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-3 mt-1"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <div>
+                  <h4 class="font-semibold">Email</h4>
+                  <p class="text-gray-400">Muhammadawais4th@gmail.com</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-500 mr-3 mt-1"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <div>
+                  <h4 class="font-semibold">Phone</h4>
+                  <p class="text-gray-400">+92 312-523-6168</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex mt-8 space-x-4">
+              <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-purple-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+              </a>
+              <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-purple-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+              </a>
+              <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-purple-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </a>
+              <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-purple-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              </a>
+            </div>
+          </div>
+          
+          <div class="slide-in-right">
+            <form class="space-y-4">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-gray-400 mb-1">Name</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Your Name"
+                  />
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="Your Email"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label for="subject" class="block text-sm font-medium text-gray-400 mb-1">Subject</label>
+                <input 
+                  type="text" 
+                  id="subject" 
+                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Subject"
+                />
+              </div>
+              
+              <div>
+                <label for="message" class="block text-sm font-medium text-gray-400 mb-1">Message</label>
+                <textarea 
+                  id="message" 
+                  rows="5"
+                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Your Message"
+                ></textarea>
+              </div>
+              
+              <button 
+                type="submit" 
+                class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center"
+              >
+                Send Message
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 py-6">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-gray-400">© 2025 John Watson. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize particles
+    tsParticles.load("tsparticles", {
+      background: {
+        color: {
+          value: "#111827",
+        },
+      },
+      fpsLimit: 120,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: "push",
+          },
+          onHover: {
+            enable: true,
+            mode: "repulse",
+          },
+          resize: true,
+        },
+        modes: {
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 100,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: "#ffffff",
+        },
+        links: {
+          color: "#ffffff",
+          distance: 150,
+          enable: true,
+          opacity: 0.2,
+          width: 1,
+        },
+        collisions: {
+          enable: true,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: {
+            default: "bounce",
+          },
+          random: false,
+          speed: 1,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+            area: 800,
+          },
+          value: 80,
+        },
+        opacity: {
+          value: 0.2,
+        },
+        shape: {
+          type: "circle",
+        },
+        size: {
+          value: { min: 1, max: 3 },
+        },
+      },
+      detectRetina: true,
+    });
+
+    // Typing animation
+    document.addEventListener('DOMContentLoaded', () => {
+      const typingText = document.querySelector('.typing-text');
+      const texts = ['Full Stack Developer', 'UI/UX Designer', 'Web Developer', 'JavaScript Expert'];
+      let textIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      let typingSpeed = 100;
+
+      function type() {
+        const currentText = texts[textIndex];
+        
+        if (isDeleting) {
+          typingText.textContent = currentText.substring(0, charIndex - 1);
+          charIndex--;
+          typingSpeed = 50;
+        } else {
+          typingText.textContent = currentText.substring(0, charIndex + 1);
+          charIndex++;
+          typingSpeed = 100;
+        }
+        
+        if (!isDeleting && charIndex === currentText.length) {
+          isDeleting = true;
+          typingSpeed = 1000; // Pause at end
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          textIndex = (textIndex + 1) % texts.length;
+          typingSpeed = 500; // Pause before typing next
+        }
+        
+        setTimeout(type, typingSpeed);
+      }
+      
+      setTimeout(type, 1000);
+    });
+
+    // Intersection Observer for section animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section');
+      const skillBars = document.querySelectorAll('.skill-bar');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Animate skill bars if in about section
+            if (entry.target.id === 'about') {
+              skillBars.forEach((bar, index) => {
+                setTimeout(() => {
+                  bar.classList.add('animate');
+                }, index * 100);
+              });
+            }
+            
+            // Update active menu item
+            const id = entry.target.getAttribute('id');
+            if (id) {
+              const menuItems = document.querySelectorAll('.nav-link');
+              menuItems.forEach(item => {
+                if (item.getAttribute('href') === `#${id}`) {
+                  item.classList.add('text-purple-500');
+                } else {
+                  item.classList.remove('text-purple-500');
+                }
+              });
+            }
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+      
+      // Mobile menu toggle
+      const menuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const closeButton = document.getElementById('close-mobile-menu');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+      
+      menuButton.addEventListener('click', () => {
+        mobileMenu.style.display = 'flex';
+      });
+      
+      closeButton.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+      });
+      
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.style.display = 'none';
+        });
+      });
+      
+      // Smooth scroll for navigation links
+      const navLinks = document.querySelectorAll('nav a, .mobile-link');
+      
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          
+          window.scrollTo({
+            top: targetSection.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
